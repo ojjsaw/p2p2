@@ -1,5 +1,6 @@
 package heap;
 
+import chainexception.ChainException;
 import global.RID;
 
 public class HeapScan {
@@ -22,7 +23,7 @@ public class HeapScan {
 	* Closes the file scan, releasing any pinned pages.
 
 	*/
-	public void close() {}
+	public void close() throws ChainException{}
 
 
 	/**

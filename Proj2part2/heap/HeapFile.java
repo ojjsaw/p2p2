@@ -1,5 +1,6 @@
 package heap;
 
+import chainexception.ChainException;
 import heap.HFPage;
 
 import global.GlobalConst;
@@ -26,7 +27,7 @@ public class HeapFile {
    *
    * @throws IllegalArgumentException if the record is too large
    */
-  public RID insertRecord(byte[] record) {
+  public RID insertRecord(byte[] record) throws ChainException{
 	return null;}
  
   /**
@@ -39,17 +40,21 @@ public class HeapFile {
  
 /**
    * Updates the specified record in the heap file.
+ * @return 
    *
    * @throws IllegalArgumentException if the rid or new record is invalid
    */
-  public void updateRecord(RID rid, byte[] newRecord) {}
+  public boolean updateRecord(RID rid, Tuple newTuple) throws ChainException{
+	return false;}
  
   /**
    * Deletes the specified record from the heap file.
+ * @return 
    *
    * @throws IllegalArgumentException if the rid is invalid
    */
-  public void deleteRecord(RID rid) {}
+  public boolean deleteRecord(RID rid) {
+	return false;}
  
 /**
    * Gets the number of records in the file.
@@ -64,5 +69,15 @@ public class HeapFile {
    */
   protected PageId getAvailPage(int reclen) {
 	return null;}
+
+public HeapScan openScan() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+public Tuple getRecord(RID rid) {
+	// TODO Auto-generated method stub
+	return null;
+}
  
 }
