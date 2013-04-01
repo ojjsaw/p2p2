@@ -1,6 +1,7 @@
 package heap;
 
 import chainexception.ChainException;
+import global.Minibase;
 import global.RID;
 
 public class HeapScan {
@@ -13,7 +14,9 @@ public class HeapScan {
 
 	*/
 
-	protected HeapScan(HeapFile hf) {}
+	protected HeapScan(HeapFile hf) {
+		//Minibase.BufferManager.pinPage(pageno, page, skipRead)
+	}
 
 
 	protected void finalize() throws Throwable {}

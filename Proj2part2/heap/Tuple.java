@@ -22,7 +22,16 @@ public class Tuple implements GlobalConst {
 	/** * construction function * * @param atuple * @param offset * @param length */
 	public Tuple(byte[] atuple, int offset, int length)
 	{ 
-		data = atuple; tuple_offset = offset; tuple_length = length; 
+		data = atuple; tuple_offset = offset; tuple_length = length;
+		
+		//NOT NEEDED I THINK Fixed this becasue it's only purpose is to be used to pad the byte to a certain size (See HeapFile.Insert())
+		/*tuple_offset = offset; 
+		tuple_length = length;
+		byte[] d = new byte[tuple_length];
+		for(int i = 0; i < tuple_length-tuple_offset; i ++){
+			d[tuple_offset+i] = atuple[i];
+		}
+		data = d;*/
 	}
 
 	/** * * @param size */ 
@@ -64,5 +73,16 @@ public class Tuple implements GlobalConst {
 	{
 		this.tuple_offset = tuple_offset; 
 	}
+	
+	//Another possible implementation instead of the one that uses the constructor
+	/*public byte[] getPaddedTupleByteArray()
+	{
+		byte[] b = new byte[this.getLength()+this.getTuple_offset()];
+		byte[] d = this.getTupleByteArray();
+		for(int i = 0; i < d.length; i ++){
+			b[this.getTuple_offset()+i] = d[i];
+		}
+		return b;
+	}*/
 
 }

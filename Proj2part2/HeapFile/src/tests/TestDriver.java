@@ -66,8 +66,8 @@ public class TestDriver implements GlobalConst {
     //To port it to a different platform, get "user.name" should
     //still work well because this feature is not meant to be UNIX
     //dependent. 
-    dbpath = "/Users/ojjsaw/git/xyzpart2/Proj2part2"+nameRoot+System.getProperty("user.name")+".minibase-db"; 
-    logpath = "/Users/ojjsaw/git/xyzpart2/Proj2part2"+nameRoot +System.getProperty("user.name")+".minibase-log"; 
+    dbpath = "C:/Users/Matt/git/p2p2test2/Proj2part2"+nameRoot+System.getProperty("user.name")+".minibase-db"; 
+    logpath = "C:/Users/Matt/git/p2p2test2/Proj2part2"+nameRoot +System.getProperty("user.name")+".minibase-log"; 
   }
 
   /**
