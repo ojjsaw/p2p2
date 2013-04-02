@@ -13,9 +13,14 @@ public class HeapScan {
 	* iterator fields.
 
 	*/
-
-	protected HeapScan(HeapFile hf) {
-		//Minibase.BufferManager.pinPage(pageno, page, skipRead)
+	HeapFileNode hfn;
+	HeapFileNode gn;
+	RID gnr;
+	protected HeapScan(HeapFileNode h) {
+		hfn = h;
+		gn = h;
+		gnr = h.firstRecord();
+		Minibase.BufferManager.pinPage(h.pageno, h.page, false);
 	}
 
 
@@ -35,7 +40,12 @@ public class HeapScan {
 
 	*/
 	public boolean hasNext() {
-		return false;}
+		RID rid = new RID();
+		if(this.getNext(rid) == null){
+			return false;
+		}
+		return true;
+	}
 
 	 
 
@@ -49,6 +59,20 @@ public class HeapScan {
 
 	*/
 	public Tuple getNext(RID rid) {
-		return null;}
+		
+			  if(gnr == null){
+				  if(gn.next == null){
+					  Minibase.BufferManager.unpinPage(hfn.pageno, true);
+					  return null;
+					  //throw new IllegalStateException();
+				  }
+				  gn = gn.next;
+				  gnr = gn.firstRecord();
+			  }
+		rid = gnr;
+		Tuple temp = new Tuple(gn.selectRecord(rid));
+		gnr = gn.nextRecord(gnr);
+		return temp;
+	}
 	
 }

@@ -86,12 +86,13 @@ public class HeapFile {
  
   /**
    * Inserts a new record into the file and returns its RID.
+ * @throws SpaceNotAvailableException 
    *
    * @throws IllegalArgumentException if the record is too large
    */
-  public RID insertRecord(byte[] record) throws ChainException{
+  public RID insertRecord(byte[] record) throws ChainException, SpaceNotAvailableException{
 	  if (record.length > global.Page.PAGE_SIZE - HFPage.HEADER_SIZE) {
-		  throw new IllegalArgumentException("Record too large");
+		  throw new SpaceNotAvailableException();
 	  }
 	  //Create RID and Tuple and put data from record into them
 	  //RID newRID = new RID();
@@ -108,7 +109,7 @@ public class HeapFile {
 	  
 	  //DOUBT: Do we set slotNo?
 	  RID rid = null;
-	  HeapFileNode curr = hfi.top;
+	  HeapFileNode curr  = hfi.top;
 	  while(curr != null){
 			  rid = curr.insertRecord(record);
 			  if(rid == null){
@@ -137,7 +138,7 @@ public class HeapFile {
 	  //Minibase.BufferManager.unpinPage(rid.pageno, true);//Unpin Page
 	  
 	  //return newRID;
-	  return rid;
+	  return null;
 	}
  
   /**
@@ -153,7 +154,7 @@ public class HeapFile {
 		  currRid = curr.nextRecord(currRid);
 		  if(currRid == null){
 			  if(curr.next == null){
-				  break;
+				  throw new IllegalArgumentException("RID not found");
 			  }
 			  curr = curr.next;
 			  currRid = curr.firstRecord();
@@ -172,18 +173,22 @@ public class HeapFile {
   public boolean updateRecord(RID rid, Tuple newTuple) throws ChainException{
 	  HeapFileNode curr = hfi.top;
 	  RID currRid = curr.firstRecord();
-	  
 	  while(!currRid.equals(rid)){
-		  currRid = curr.nextRecord(currRid);
-		  if(currRid == null){
+		  if(curr.nextRecord(currRid) == null){
 			  if(curr.next == null){
-				  return false;
+				  throw new InvalidUpdateException();
 			  }
 			  curr = curr.next;
 			  currRid = curr.firstRecord();
 		  }
+		  else{
+			  currRid = curr.nextRecord(currRid);
+		  }
 	  }
-	  curr.updateRecord(rid, newTuple);
+	  if(rid.getLength() != newTuple.getLength()){
+		  //throw new InvalidUpdateException();
+	  }
+	  curr.updateRecord(currRid, newTuple);
 	  return true;
 	}
  
@@ -259,8 +264,8 @@ public class HeapFile {
 
 public HeapScan openScan() {
 	// TODO Auto-generated method stub
-	
-	return null;
+	HeapScan hs = new HeapScan(hfi.top);
+	return hs;
 }
 
 public Tuple getRecord(RID rid) {

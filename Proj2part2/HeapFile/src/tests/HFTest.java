@@ -191,6 +191,10 @@ class HFDriver extends TestDriver implements GlobalConst
 			boolean done = false;
 			while (!done) { 
 				try {
+					System.out.println(rid);
+					if(scan == null){
+						System.exit(0);
+					}
 					tuple = scan.getNext(rid);
 					if (tuple == null) {
 						done = true;
@@ -786,11 +790,11 @@ class HFDriver extends TestDriver implements GlobalConst
 		boolean _passAll = OK;
 
 		if (!test1()) { _passAll = FAIL; }
-		//if (!test2()) { _passAll = FAIL; }
-		//if (!test3()) { _passAll = FAIL; }
-		//if (!test4()) { _passAll = FAIL; }
-		//if (!test5()) { _passAll = FAIL; }
-		//if (!test6()) { _passAll = FAIL; }
+		if (!test2()) { _passAll = FAIL; }
+		if (!test3()) { _passAll = FAIL; }
+		if (!test4()) { _passAll = FAIL; }
+		if (!test5()) { _passAll = FAIL; }
+		if (!test6()) { _passAll = FAIL; }
 
 		return _passAll;
 	}
